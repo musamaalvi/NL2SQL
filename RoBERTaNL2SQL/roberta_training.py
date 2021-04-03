@@ -1,6 +1,6 @@
 import torch
 
-device = torch.device("cuda")
+device = torch.device("cpu")
 
 def get_where_column(conds):
     """

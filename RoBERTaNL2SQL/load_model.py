@@ -3,7 +3,7 @@ import os
 from seq2sql_model_classes import Seq2SQL_v1
 from transformers import RobertaConfig, RobertaModel, RobertaTokenizer
 
-device = torch.device("cuda")
+device = torch.device("cpu")
 
 def get_roberta_model():
 

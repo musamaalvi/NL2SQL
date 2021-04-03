@@ -52,7 +52,7 @@ def get_data(file_path: str,batch_size: int):
         batch_size=batch_size,
         dataset=train_data,
         shuffle=True,
-        num_workers=4,
+        num_workers=0,
         collate_fn=lambda x: x  # now dictionary values are not merged!
     )
 
@@ -60,7 +60,7 @@ def get_data(file_path: str,batch_size: int):
         batch_size=batch_size,
         dataset=dev_data,
         shuffle=True,
-        num_workers=4,
+        num_workers=0,
         collate_fn=lambda x: x  # now dictionary values are not merged!
     )
 
@@ -84,7 +84,7 @@ def get_test_data(file_path: str,batch_size: int):
         batch_size=batch_size,
         dataset=test_data,
         shuffle=True,
-        num_workers=4,
+        num_workers=0,
         collate_fn=lambda x: x  # now dictionary values are not merged!
     )
     
@@ -108,7 +108,7 @@ def get_zero_data(file_path: str,batch_size: int):
         batch_size=batch_size,
         dataset=test_data,
         shuffle=True,
-        num_workers=4,
+        num_workers=0,
         collate_fn=lambda x: x  # now dictionary values are not merged!
     )
     
