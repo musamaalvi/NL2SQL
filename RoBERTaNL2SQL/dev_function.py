@@ -9,7 +9,34 @@ import infer_functions
 import torch
 from tqdm.notebook import tqdm
 import seq2sql_model_testing
+from nltk.corpus import wordnet as wn
+import nltk
+nltk.download('wordnet')
 
+
+
+def header_knowledge_updated(header_knowledge, header, nlq_tokenized, nlq ):
+    #for i, each_header_list in enumerate(header):
+    for k, head in enumerate(header):
+        for kk, tok in enumerate(nlq_tokenized):
+            if check_similarity_words(head, tok) > 0.8:
+                #if head.lower() != tok.lower():
+                header_knowledge[k]=1
+
+    return header_knowledge
+
+def check_similarity_words(head, tok):
+    syns1 = wn.synsets(head) 
+    syns2 = wn.synsets(tok)
+    if len(syns1) > 0 and len(syns2) > 0:
+        head_syn = wn.synset(syns1[0].name())
+        
+        tok_syn = wn.synset(syns2[0].name())
+        return_value =  head_syn.wup_similarity(tok_syn)
+        if return_value == None:
+            return 0
+        return return_value
+    return 0
 
 def train(seq2sql_model,roberta_model,model_optimizer,roberta_optimizer,roberta_tokenizer,roberta_config,path_wikisql,train_loader):
 
@@ -86,9 +113,10 @@ def train(seq2sql_model,roberta_model,model_optimizer,roberta_optimizer,roberta_
                 knowledge.append(max(question_token_length)*[0])
 
         knowledge_header = []
-        for k in batch:
+        for i, k in enumerate(batch):
             if "header_knowledge" in k:
-                knowledge_header.append(k["header_knowledge"])
+                updated_knowledge = header_knowledge_updated(k["header_knowledge"], headers[i], natural_lang_utterance_tokenized[i], natural_lang_utterance[i])
+                knowledge_header.append(updated_knowledge)
             else:
                 knowledge_header.append(max(header_count) * [0])
 
