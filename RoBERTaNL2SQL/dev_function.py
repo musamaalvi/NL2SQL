@@ -14,8 +14,19 @@ import nltk
 nltk.download('wordnet')
 
 
+def question_knowledge_updated(header_knowledge, header, nlq_tokenized ):
+    #for i, each_header_list in enumerate(header):
+    for k, tok in enumerate(nlq_tokenized):
+        for kk, head in enumerate(header):
+            if check_similarity_words(head, tok) > 0.8:
+                #if head.lower() != tok.lower():
+                header_knowledge[k]=4
 
-def header_knowledge_updated(header_knowledge, header, nlq_tokenized, nlq ):
+    return header_knowledge
+
+
+
+def header_knowledge_updated(header_knowledge, header, nlq_tokenized ):
     #for i, each_header_list in enumerate(header):
     for k, head in enumerate(header):
         for kk, tok in enumerate(nlq_tokenized):
@@ -106,16 +117,17 @@ def train(seq2sql_model,roberta_model,model_optimizer,roberta_optimizer,roberta_
             continue
 
         knowledge = []
-        for k in batch:
+        for i, k in enumerate(batch):
             if "bertindex_knowledge" in k:
-                knowledge.append(k["bertindex_knowledge"])
+                updated_knowledge = question_knowledge_updated(k["bertindex_knowledge"],headers[i]  , natural_lang_utterance_tokenized[i])
+                knowledge.append(updated_knowledge)
             else:
                 knowledge.append(max(question_token_length)*[0])
 
         knowledge_header = []
         for i, k in enumerate(batch):
             if "header_knowledge" in k:
-                updated_knowledge = header_knowledge_updated(k["header_knowledge"], headers[i], natural_lang_utterance_tokenized[i], natural_lang_utterance[i])
+                updated_knowledge = header_knowledge_updated(k["header_knowledge"], headers[i], natural_lang_utterance_tokenized[i])
                 knowledge_header.append(updated_knowledge)
             else:
                 knowledge_header.append(max(header_count) * [0])
