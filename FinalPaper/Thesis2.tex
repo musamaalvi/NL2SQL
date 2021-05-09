@@ -50,7 +50,7 @@
 
 
 \section{Abstract}
-Relational databases are being used world wide to store massive amount of data in numerous fields. However, user faces issues while accessing data from these databases. Users need to understand structured query languages (SQL) in order to query on these databases and fetch results. An average user do not have this knowledge of these query languages. Here NL2SQL tasks play their role for providing an interface to fetch results. These tasks revolves around converting questions written in natural languages to structured query languages using deep learning approaches. This problem has received more attention recently because of large scale dataset releases such as WikiSQL. We have used two models BERT and RoBERTa to achieve our task. In BERT model, we utilize table content as well to develop feature vectors and pass these feature vectors along with BERT embeddings in LSTM models. However, on other hand, we pass data-agnostic knowledge vectors along with RoBERTa embeddings in LSTM models considering data privacy issues. This has privacy v/s accuracy trade off. 
+Relational databases are being used world wide to store massive amount of data in numerous fields. However, user faces issues while accessing data from these databases. Users need to understand structured query languages (SQL) in order to query on these databases and fetch results. An average user do not have this knowledge of these query languages. Here NL2SQL tasks play their role for providing an interface to fetch results. These tasks revolves around converting questions written in natural languages to structured query languages using deep learning approaches. This problem has received more attention recently because of large scale dataset releases such as WikiSQL. We have used RoBERTa model to achieve our task. We use RoBERTa model embeddings along with two knwoledge vectors, namely, header knowledge and question knowledge vectors and pass it to LSTM based models to give us final results. We have improved both knowledge vectors which are passed to LSTM based models. The proposed method in the study has been evaluated on WikiSQL dataet. 
 \\
 \\
 
@@ -79,7 +79,10 @@ Pre trained language models such as BERT \cite{devlin2018bert} and RoBERTa \cite
 \\Although there are number of models having significant accuracies on WikiSQL dataset, accuracies are still limited on Spider benchmark\cite{yu2018spider}. One of the reasons is that Spider dataset is more complex compared to WikiSQL dataset. WikiSQL focuses on rather simpler queries having single or multiple where clauses and no joins.
 
 \subsection{Motivation}
-dasdsa
+Strcutured query lagnauges has always been a bottleneck for researchers who are not familiar with the ways of query langauges. 
+
+
+
 
 \newpage
 
@@ -96,9 +99,17 @@ structured query language, we use sequence-to-sequence style model. In order to 
 \end{figure}
 
 
-SQLNet \cite{xu2017sqlnet} works differently from Seq2Seq method. It creates the sketch of important features and then these features are predicted individually. It uses column attention method and uses LSTM to encode question and headers. There are number of models which are built on top of this with some variations. For example, SQLova \cite{hwang2019comprehensive} uses the BERT encoders instead of LSTM. 
+SQLNet \cite{xu2017sqlnet} works differently from Seq2Seq method. It creates the sketch of important features and then these features are predicted individually as shown in figure \ref{sqlsketch}. It uses column attention method and uses LSTM to encode question and headers. There are number of models which are built on top of this with some variations. For example, SQLova \cite{hwang2019comprehensive} uses the BERT encoders instead of LSTM. 
 \\
 \\
+\\
+\begin{figure}[H]
+    \includegraphics[width=400pt]{sqlsketch}
+    \caption{Sketch syntax and the dependency in a sketch}
+    \label{sqlsketch}
+\end{figure}
+
+
 NL2SQL-Rule \cite{guo2019content} uses table content as well while predicting the SQL. It marks vectors to indicate the match of question and headers across two parts and provide it in BERT representations. However, ColloQL uses table content in BERT encoders. Another technique on top that is used frequently with these models is Execution Guided (EG) decoding. This was first introduced in \cite{wang2018robust}. In this technique, partial SQL queries are executed and their results are used as a guidance for decoding process. However, this is not very helpful in real world. In real world applications, tables have records in millions which would make this process very slow and time consuming. Moreover, EG methods change query on the basis of whether empty result is returned, which is not always due to an erroneous query, but it works on WikiSQL dataset setting. \\
 \\One of the drawbacks using content to enhance your model is the data privacy. When table content and data is provided in the training step, it's privacy is being compromised. There are some industries where data has privacy issues and can not use for the training of model. In order to address this issue, some work has been done. \cite{pal2020data} tried to address this issue using RoBERTa model. It has suggested data agnostic methods. It has eliminated the use of table data and gives the structured query language (SQL) utilizing only table schema and the provided natural language question. Although they were able to completely eliminate table content, there was privacy v/s performance tradeoff. Using this technique, model is capable of zero shot learning and it makes it scalable as well. Headers and natural language question embeddings were created using RoBERTa model and it was provided for prediction along with two knowledge vectors, namely, Question Mark Vector and Header Mark Vector. These are the binary knowledge vectors and important of these vectors are marked with 1 which tells the model the importance and to focus more on this part. It is calculated with the matching tokens across the table schema (Headers) and the natural language question. RoBERTa embedding layer plays an important part of this problem. It is possible that there are very few matches across natural language question and the Headers, therefore, two knowledge vectors will not have useful information. Since RoBERTa is already trained on masked language modeling tasks and they have the sense of knowledge and context, it can be very helpful in solving the above problem. \\
 \\IRNet is one of the known effective model for this problem \cite{guo2019towards}. It is used for complex and cross-domain text to structured query language. The main focus of this model has been on two issues. First is to address the mismatch between the queries written in natural language and the generated SQL. Second is to increase the accuracy in generating the column for SQL. Generating the column for SQL has been difficult due to the use of out of domain words. 
