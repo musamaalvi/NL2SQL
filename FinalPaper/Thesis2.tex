@@ -76,10 +76,10 @@ This has been a long standing open problem to provide an interface on which a us
  Relational databases store a vast amount of data and are accessed through structured query languages. Many non technical persons are not familiar with these structured query languages, which creates a lot of trouble and dependencies. If we can remove this structured query language (SQL) dependency, then it would be a lot easier to fetch data from databases. This problem has been given a lot of attention after great number of  large scale datasets has been made available \cite{zhong2017seq2sql} \cite{setlur2019inferencing} \cite{yu2018spider}. 
 \\ \\
 Pre trained language models such as BERT \cite{devlin2018bert} and RoBERTa \cite{liu2019roberta}  have gained a lot of success in the area of natural language processing tasks. \cite{guo2019content} has done some amazing work using BERT on WikiSQL dataset. It has utilized the pre-trained model BERT as well as database table content in order to achieve state of the art model with highest accuracy. This comes with some limitations which we will discuss in related work. 
-\\Although there are number of models having significant accuracies on WikiSQL dataset, accuracies are still limited on Spider benchmark\cite{yu2018spider}. One of the reasons is that Spider dataset is more complex compared to WikiSQL dataset. WikiSQL focuses on rather simpler queries having single or multiple where clauses and no joins.
+\\Although there are number of models having significant accuracies on WikiSQL dataset, accuracies are still limited on Spider benchmark\cite{yu2018spider}. One of the reasons is that Spider dataset is more complex compared to WikiSQL dataset. WikiSQL focuses on rather simpler queries having single or multiple where clauses and no joins.\\\\\\
 
 \subsection{Motivation}
-Strcutured query lagnauges has always been a bottleneck for researchers who are not familiar with the ways of query langauges. 
+Strcutured query lagnauges has always been a bottleneck for researchers who are not familiar with the ways of structured query langauges. This unfamiliarity creates an additional dependency for researchers in order to interact with databases for the dependency of data. If we are able to make a program, model, some kind of interface which lets researchers or any native users interact with databases without any prior knowledge of database, it will save a lot of time and resources. This has been a primarily source of motivaion to decouple this dependency in order to save time and energy as well. 
 
 
 
@@ -87,6 +87,10 @@ Strcutured query lagnauges has always been a bottleneck for researchers who are 
 \newpage
 
 \section{Related Work}
+
+In this section, we will review the past contributions that has brought natural language to structured query langauge task closer to real world solutions. 
+
+\subsection{Problems with Previous Approaches}
 
 Problem of converting plain text into a structured query language (SQL) is a problem of semantic parsing. It has been wildly in the focus of database communities. In the beginning, focus was more on rule based techniques \cite{setlur2016eviza}, but after the release of large scale databases \cite{yu2018spider} \cite{zhong2017seq2sql}, more approaches has come forward. Recent approaches are now NLP based. Some of the broader categories are - sequence to tree, sequence to sequence and SQL sketch. These approaches comes with their pros and cons. One of the issues of Seq2Seq discussed in \cite{xu2017sqlnet} is that it faces the order matters problem. In order to convert natural language query to
 structured query language, we use sequence-to-sequence style model. In order to use this type of model, we have to serialize SQL queries. Here is the problematic part. Since there can be multiple correct queries, it creates different serializations for each query which is not good. Example shown in figure \ref{fig:Order Matters}. There are some approaches which helps overcome this issue. One of the solution for this type of issue is to rely on reinforcement learning to reward the decoder when it comes with any of the correct serializations \cite{xu2017sqlnet}. 
@@ -98,7 +102,7 @@ structured query language, we use sequence-to-sequence style model. In order to 
     \label{fig:Order Matters}
 \end{figure}
 
-
+\subsection{SQLNet}
 SQLNet \cite{xu2017sqlnet} works differently from Seq2Seq method. It creates the sketch of important features and then these features are predicted individually as shown in figure \ref{sqlsketch}. It uses column attention method and uses LSTM to encode question and headers. There are number of models which are built on top of this with some variations. For example, SQLova \cite{hwang2019comprehensive} uses the BERT encoders instead of LSTM. 
 \\
 \\
@@ -109,11 +113,18 @@ SQLNet \cite{xu2017sqlnet} works differently from Seq2Seq method. It creates the
     \label{sqlsketch}
 \end{figure}
 
-
-NL2SQL-Rule \cite{guo2019content} uses table content as well while predicting the SQL. It marks vectors to indicate the match of question and headers across two parts and provide it in BERT representations. However, ColloQL uses table content in BERT encoders. Another technique on top that is used frequently with these models is Execution Guided (EG) decoding. This was first introduced in \cite{wang2018robust}. In this technique, partial SQL queries are executed and their results are used as a guidance for decoding process. However, this is not very helpful in real world. In real world applications, tables have records in millions which would make this process very slow and time consuming. Moreover, EG methods change query on the basis of whether empty result is returned, which is not always due to an erroneous query, but it works on WikiSQL dataset setting. \\
-\\One of the drawbacks using content to enhance your model is the data privacy. When table content and data is provided in the training step, it's privacy is being compromised. There are some industries where data has privacy issues and can not use for the training of model. In order to address this issue, some work has been done. \cite{pal2020data} tried to address this issue using RoBERTa model. It has suggested data agnostic methods. It has eliminated the use of table data and gives the structured query language (SQL) utilizing only table schema and the provided natural language question. Although they were able to completely eliminate table content, there was privacy v/s performance tradeoff. Using this technique, model is capable of zero shot learning and it makes it scalable as well. Headers and natural language question embeddings were created using RoBERTa model and it was provided for prediction along with two knowledge vectors, namely, Question Mark Vector and Header Mark Vector. These are the binary knowledge vectors and important of these vectors are marked with 1 which tells the model the importance and to focus more on this part. It is calculated with the matching tokens across the table schema (Headers) and the natural language question. RoBERTa embedding layer plays an important part of this problem. It is possible that there are very few matches across natural language question and the Headers, therefore, two knowledge vectors will not have useful information. Since RoBERTa is already trained on masked language modeling tasks and they have the sense of knowledge and context, it can be very helpful in solving the above problem. \\
-\\IRNet is one of the known effective model for this problem \cite{guo2019towards}. It is used for complex and cross-domain text to structured query language. The main focus of this model has been on two issues. First is to address the mismatch between the queries written in natural language and the generated SQL. Second is to increase the accuracy in generating the column for SQL. Generating the column for SQL has been difficult due to the use of out of domain words. 
-\\Another approach that is used is called X-SQL. It is a new network architecture. X-SQL proposes to reinforce the contextual output from BERT-style pre training model into the structural schema representation, and learn a new schema representation for downstream tasks. This is tested on WikiSQL data set and it shows better results than the state of the art models. Results were improved on development as well as test sets \cite{bogin2019global}.
+\subsection{Content Enhanced Model}
+NL2SQL-Rule \cite{guo2019content} uses table content as well while predicting the SQL. It marks vectors to indicate the match of question and headers across two parts and provide it in BERT representations as shown in figure \ref{cellfeature}. However, ColloQL uses table content in BERT encoders. Another technique on top that is used frequently with these models is Execution Guided (EG) decoding. This was first introduced in \cite{wang2018robust}. In this technique, partial SQL queries are executed and their results are used as a guidance for decoding process. However, this is not very helpful in real world. In real world applications, tables have records in millions which would make this process very slow and time consuming. Moreover, EG methods change query on the basis of whether empty result is returned, which is not always due to an erroneous query, but it works on WikiSQL dataset setting. \\
+\begin{figure}[H]
+    \includegraphics[width=400pt]{cellfeature}
+    \caption{Knowledge vector using cell data}
+    \label{cellfeature}
+\end{figure}
+One of the drawbacks using content to enhance your model is the data privacy. When table content and data is provided in the training step, it's privacy is being compromised. There are some industries where data has privacy issues and can not use for the training of model. In order to address this issue, some work has been done. \cite{pal2020data} tried to address this issue using RoBERTa model. It has suggested data agnostic methods. It has eliminated the use of table data and gives the structured query language (SQL) utilizing only table schema and the provided natural language question. Although they were able to completely eliminate table content, there was privacy v/s performance tradeoff. Using this technique, model is capable of zero shot learning and it makes it scalable as well. Headers and natural language question embeddings were created using RoBERTa model and it was provided for prediction along with two knowledge vectors, namely, Question Mark Vector and Header Mark Vector. These are the binary knowledge vectors and important of these vectors are marked with 1 which tells the model the importance and to focus more on this part. It is calculated with the matching tokens across the table schema (Headers) and the natural language question. RoBERTa embedding layer plays an important part of this problem. It is possible that there are very few matches across natural language question and the Headers, therefore, two knowledge vectors will not have useful information. Since RoBERTa is already trained on masked language modeling tasks and they have the sense of knowledge and context, it can be very helpful in solving the above problem. \\
+\subsection{IRNet}
+IRNet is one of the known effective model for this problem \cite{guo2019towards}. It is used for complex and cross-domain text to structured query language. The main focus of this model has been on two issues. First is to address the mismatch between the queries written in natural language and the generated SQL. Second is to increase the accuracy in generating the column for SQL. Generating the column for SQL has been difficult due to the use of out of domain words. 
+\subsection{X-SQL}
+Another approach that is used is called X-SQL. It is a new network architecture. X-SQL proposes to reinforce the contextual output from BERT-style pre training model into the structural schema representation, and learn a new schema representation for downstream tasks. This is tested on WikiSQL data set and it shows better results than the state of the art models. Results were improved on development as well as test sets \cite{bogin2019global}.
 
 
 
@@ -131,6 +142,9 @@ WikiSQL is a large semantic parsing dataset. It contains around 24,241 tables an
 
 
 \subsection{Implementation}
+We have implemented two based models based on BERT and RoBERTa, in order to build up our implementation on top of it. In the following section, we will be going through each implementation and their differences along with advantages and disadvantages. 
+
+\subsection{RoBERTa}
 In RoBERTa based model, we generate two knowledge vectors to give our model more confidence. These two are binary vectors and tell model which part are more important and need to be focused on by marking that specific parts. They encode the significance of headers and question tokens. Both of these vectors are then concatenated together and passed as additional features to model in order to bring more confidence in models. 
 
 
@@ -152,8 +166,12 @@ First, vector is initialized of same length as natural language question and ass
 \end{figure}
 
 For header mark vector, we follow same procedure. Frist, vector is initialized of same length as headers and assigned all the values to zero in Fig 3. After initialization, program loops on headers. Each header and natural language question is passed in "contains" function which returns true if the header exists in questions, and false if it does not exist. If the header exists in question, then header index position is marked in vector with 1, otherwise, value remains 0 as per initialization. One thing to notice here is that loop iteration is not over headers here, rather it is on individual words in headers. Moreover, one thing that is majorly different here from \cite{guo2019content} is that we do not iterate through data here, hence maintaining the data integrity and privacy.
-\\ \\
 
+
+\subsection{BERT}
+In BERT based model, we generate two knowledge vectors as well to give our model more confidence. These two are binary vectors same as in the case of RoBERTa and tell model which part are more important and need to be focused on by marking that specific parts. They encode the significance of headers and question tokens. Both of these vectors are then concatenated together and passed as additional features to model in order to bring more confidence in models. The main difference comes in the encoding. Here we encode based on the actual data which compromises the privacy of the data. Here we need the actual data for the encoding and for the elarning phase of the model. 
+
+\subsubsection{Question Mark Vector}
 
 \subsection{Model}
 Sequence to sequence style model is not recommended to use here because of the "order-matters" problem. It is possible for SQL query to have more than one correct queries. It is possible to move some conditions ordering and still get correct result. However, sequence to sequence style model choses one ordering correct and it labels other queries as wrong. In order to overcome this issue, another approach is used here suggested by SQLNet \cite{xu2017sqlnet}. It uses sketch based approach to predict SQL queries. However, unlike sequence to sequence, it eliminates the task of predicting complete queries and reduced that task into predicting some parts of it only. Hence the order matters problem is eliminated here. SQL query sketch:
