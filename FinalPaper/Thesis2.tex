@@ -172,6 +172,23 @@ For header mark vector, we follow same procedure. Frist, vector is initialized o
 In BERT based model, we generate two knowledge vectors as well to give our model more confidence. These two are binary vectors same as in the case of RoBERTa and tell model which part are more important and need to be focused on by marking that specific parts. They encode the significance of headers and question tokens. Both of these vectors are then concatenated together and passed as additional features to model in order to bring more confidence in models. The main difference comes in the encoding. Here we encode based on the actual data which compromises the privacy of the data. Here we need the actual data for the encoding and for the elarning phase of the model. 
 
 \subsubsection{Question Mark Vector}
+For the encoding of Question amrk vector, we crete a vector of question's length initialized with zeros only. After initialization, we iterate through each cell in table data and if there is a match between cell data and question, then respective position of question vector is marked. One important thing to note here is that we are iterating through table data as hown in figure \ref{cellfeature1}. This compromises the privacy of data. Although this increases the accuracy of the model due to training ona ctual data, it exposes actual data to model. 
+
+\begin{figure}[H]
+    \includegraphics[width=400pt]{cellfeature}
+    \caption{Knowledge vector using cell data}
+    \label{cellfeature1}
+\end{figure}
+
+\subsubsection{Header Mark Vector}
+For this vector, we initialize vector with zeros of ehader length. We iterate though cell data as well for marking positions of great importance which can convey useful information to the model. Once again, this vector as well compromises the privacy of actual data while training. 
+
+\begin{figure}[H]
+    \includegraphics[width=400pt]{headermarkvetorbert}
+    \caption{Header vector using cell data}
+    \label{headermarkvetorbert1}
+\end{figure}
+
 
 \subsection{Model}
 Sequence to sequence style model is not recommended to use here because of the "order-matters" problem. It is possible for SQL query to have more than one correct queries. It is possible to move some conditions ordering and still get correct result. However, sequence to sequence style model choses one ordering correct and it labels other queries as wrong. In order to overcome this issue, another approach is used here suggested by SQLNet \cite{xu2017sqlnet}. It uses sketch based approach to predict SQL queries. However, unlike sequence to sequence, it eliminates the task of predicting complete queries and reduced that task into predicting some parts of it only. Hence the order matters problem is eliminated here. SQL query sketch:
