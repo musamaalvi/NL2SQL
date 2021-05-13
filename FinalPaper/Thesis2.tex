@@ -241,11 +241,18 @@ We have built our experiment on top of the RoBERTa model.
 \subsection{WordNet}
 The WordNet database contains many sorts of relationships between words which help us understand relations between different words. It can categorize words into different hierarchies and answer many interesting questions. If we have a single word "run" and we would like to understand its relations between different words which are in close proximity to it. WordNet can gives us diagram shown in figure \ref{wordnet}.
 
+
 \begin{figure}[H]
     \includegraphics[width=400pt]{wordnet}
     \caption{WordNet}
     \label{wordnet}
 \end{figure}
+
+\subsection{Implementation}
+We have taken help of WordNet in creating of our two knowledge vectors, header knowledge vector, question knowledge vector. While marking these vectors in order to provide useful information to model with the areas where to focus on, we used to look for exact matches in the headers and questions. Through this method, our vectors were loosing much information which cold help model gain some accuracy and show better results. In our implementation, we did not look for exact amtches, rather, we created two synsets and calculated the probability of their match. We marked vectors if the probability was greater than or equal to 0.7. 
+
+\subsubsection{why?}
+It is quite common in natural language that we sometimes use synchronyms in our sentences and not exact words which were affecting results in our problem domain. Not only synchronyms, but the use of singualr words and plural words were also affecting our model, since, singular and plural does not result in exact match as well. 
 
 \section{Analysis and Results}
 
@@ -264,7 +271,24 @@ We have compared our model with the state of the art model
 as well as the baseline SQLNet Model:
 Note: Accuracy has been shortened to acc. and execution
 has been shortened to exec.
- 
+
+\subsection{BERT with Content Enhanced Implementation}
+
+BERT model implementation with cell data included in training gives promising results. However, it compromises the privacy of the data. This implementation is carried out with traditional two knowledge vectors without the additional input of WordNet, results are shown in table \ref{berttable}
+
+ \begin{table}
+\centering
+ \begin{tabular}{| m{2cm} | m{2cm}| m{2cm} |m{2cm}| m{2cm} |} 
+ \hline
+Model & Dev logical form acc. & Dev exec acc. & Test logical form acc. & Test exec acc. \\ 
+ \hline\hline
+  BERT & 84.3\% & 90.3\% & 83.7\% & 89.2\% \\ 
+
+ \hline
+\end{tabular}
+\caption{BERT Model implementation}
+\label{berttable}
+\end{table}
 
 \begin{table}
 \centering
@@ -284,7 +308,7 @@ has been shortened to exec.
  \hline
 \end{tabular}
 \caption{Table to test captions and labels}
-\label{table:1}
+\label{berttasble}
 \end{table}
 
 
