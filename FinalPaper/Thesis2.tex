@@ -274,7 +274,8 @@ has been shortened to exec.
 
 \subsection{BERT with Content Enhanced Implementation}
 
-BERT model implementation with cell data included in training gives promising results. However, it compromises the privacy of the data. This implementation is carried out with traditional two knowledge vectors without the additional input of WordNet, results are shown in table \ref{berttable}
+BERT model implementation with table data included in training gives promising results. However, it compromises the privacy of the data. This implementation is carried out with traditional two knowledge vectors without the additional input of WordNet, results are shown in table \ref{berttable} and table \ref{berttabledetailed}.
+
 
  \begin{table}
 \centering
@@ -283,34 +284,30 @@ BERT model implementation with cell data included in training gives promising re
 Model & Dev logical form acc. & Dev exec acc. & Test logical form acc. & Test exec acc. \\ 
  \hline\hline
   BERT & 84.3\% & 90.3\% & 83.7\% & 89.2\% \\ 
-
  \hline
 \end{tabular}
-\caption{BERT Model implementation}
+\caption{Overall result of BERT Model on WikiSQL task}
 \label{berttable}
 \end{table}
 
 \begin{table}
 \centering
- \begin{tabular}{| m{5cm} | m{2cm}| m{2cm} |m{2cm}| m{2cm} |} 
+ \begin{tabular}{| m{2cm} | m{2cm}| m{2cm} |m{2cm}| m{2cm} |m{2cm} | m{2cm} |} 
  \hline
- Model  & Dev logical form acc. & Dev exec acc. & Test logical form acc. & Test exec acc. \\ 
+ Model  & SELECT column & SELECT agg & WHERE number & WHERE column & WHERE op & WHERE value\\ 
  \hline\hline
- HydraNet(State of the Art) & 86.6 & 924 & 86.5 & 92.2 \\ 
+ BERT & 97.4\% & 90.0\% & 99.1\% & 97.9\% & 98.1\% &  97.6\% \\ 
  \hline
- 2 & 7 & 78 & 5415  & 5415 \\
- \hline
- 3 & 545 & 778 & 7507 & 5415  \\
- \hline
- 4 & 545 & 18744 & 7560  & 5415 \\
- \hline
- 5 & 88 & 788 & 6344 & 5415  \\ 
- \hline
+
 \end{tabular}
-\caption{Table to test captions and labels}
-\label{berttasble}
+\caption{Break down result of BERT model on WikiSQL task}
+\label{berttabledetailed}
 \end{table}
 
+
+\subsection{RoBERTa with Traditional Knowledge Vectors}
+
+We implementent RoBERTa model without using table data 
 
 \begin{figure}[H]
     \includegraphics[width=250pt]{result1}
