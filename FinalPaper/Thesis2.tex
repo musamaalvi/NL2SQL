@@ -354,7 +354,7 @@ Model & Dev logical form acc. & Dev exec acc. & Test logical form acc. & Test ex
   RoBERTa & 81.0\% & 86.0\% & 80.4\% & 85.4\% \\ 
  \hline
 \end{tabular}
-\caption{Overall result of RoBERTa Model on WikiSQL task}
+\caption{Overall result of RoBERTa Model on WikiSQL task with WordNet Header vector}
 \label{robertatableoneheader}
 \end{table}
 
@@ -371,28 +371,46 @@ Model & Dev logical form acc. & Dev exec acc. & Test logical form acc. & Test ex
  \hline
 
 \end{tabular}
-\caption{Break down result of RoBERTa model on WikiSQL task}
+\caption{Break down result of RoBERTa model on WikiSQL task with WordNet Header vector}
 \label{robertatabledetailedoneheader}
 \end{table}
 
 
+\subsection{RoBERTa Model with Question \& Header Knowledge Vectors with WordNet}
+
+We implementented RoBERTa model without using table data. We marked two knowledge vectors using only headers and natual langauge question. However, the main difference here is how we did the  encoding of Header knwoledge vector as well as Question knowledge vector. We encoded vectors here with the help of WordNet as explained in Section 6. Results are shown in table \ref{robertatabletwoheader} and table \ref{robertatabledetailedtwoheader}.
+
+ \begin{table}
+\centering
+ \begin{tabular}{| m{2cm} | m{2cm}| m{2cm} |m{2cm}| m{2cm} |} 
+ \hline
+Model & Dev logical form acc. & Dev exec acc. & Test logical form acc. & Test exec acc. \\ 
+ \hline\hline
+  RoBERTa & 81.4\% & 86.6\% & 80.5\% & 85.8\% \\ 
+ \hline
+\end{tabular}
+\caption{Overall result of RoBERTa Model on WikiSQL task with WordNet knowledge vectors}
+\label{robertatabletwoheader}
+\end{table}
 
 
+\begin{table}
+\centering
+ \begin{tabular}{| m{2cm} | m{2cm}| m{2cm} |m{2cm}| m{2cm} |m{2cm} | m{2cm} |m{2cm} |} 
+ \hline
+  Dataset & SELECT column & SELECT agg & WHERE number & WHERE column & WHERE op & WHERE value\\ 
+ \hline\hline
+  Dev & 97.2\% & 90.8\% & 98.8\% & 94.0\% & 97.9\% &  95.9\% \\ 
+\hline
+ Test & 96.7\% & 90.7\% & 98.3\% & 93.4\% & 97.3\% &  95.3\% \\ 
+ \hline
+
+\end{tabular}
+\caption{Break down result of RoBERTa model on WikiSQL task with WordNet knowledge vectors}
+\label{robertatabledetailedtwoheader}
+\end{table}
 
 
-
-\begin{figure}[H]
-    \includegraphics[width=250pt]{result1}
-    \label{fig:Model Architecture}
-\end{figure}
-
-The following are the accuracies for the individual tasks
-performed by the sub-models:
-
-\begin{figure}[H]
-    \includegraphics[width=250pt]{result2}
-    \label{fig:Model Architecture}
-\end{figure}
 
 \section{Conclusion}
 In this experiment, the focus was on building the model without using the data available in database due to obvious privacy issues. This is a data agnostic model. We have seen that existing models use table content as well as a feature when inputting the model. Moreover, if some models are not using the real data, they make use of execution guided decoding. We have not used any of these two techniques. We have developed a data blind model using only table schema. 
