@@ -307,7 +307,79 @@ Model & Dev logical form acc. & Dev exec acc. & Test logical form acc. & Test ex
 
 \subsection{RoBERTa with Traditional Knowledge Vectors}
 
-We implementent RoBERTa model without using table data 
+We implementented RoBERTa model without using table data. It did ensure the privacy of data, however, it did come with its trade off. We marked two knowledge vectors using only headers and natual langauge question. In this model, we did not use any real data for training of the model, rather, we used only schema information of the table. Results are shown in table \ref{robertatable} and table \ref{robertatabledetailed}.
+
+ \begin{table}
+\centering
+ \begin{tabular}{| m{2cm} | m{2cm}| m{2cm} |m{2cm}| m{2cm} |} 
+ \hline
+Model & Dev logical form acc. & Dev exec acc. & Test logical form acc. & Test exec acc. \\ 
+ \hline\hline
+  RoBERTa & 74.4\% & 80.9\% & 73.3\% & 80.3\% \\ 
+ \hline
+\end{tabular}
+\caption{Overall result of RoBERTa Model on WikiSQL task}
+\label{robertatable}
+\end{table}
+
+
+\begin{table}
+\centering
+ \begin{tabular}{| m{2cm} | m{2cm}| m{2cm} |m{2cm}| m{2cm} |m{2cm} | m{2cm} |m{2cm} |} 
+ \hline
+  Dataset & SELECT column & SELECT agg & WHERE number & WHERE column & WHERE op & WHERE value\\ 
+ \hline\hline
+  Dev & 96.2\% & 90.6\% & 98.0\% & 91.3\% & 93.4\% &  90.5\% \\ 
+\hline
+ Test & 95.8\% & 90.4\% & 97.2\% & 89.8\% & 92.4\% &  89.7\% \\ 
+ \hline
+
+\end{tabular}
+\caption{Break down result of RoBERTa model on WikiSQL task}
+\label{robertatabledetailed}
+\end{table}
+
+\subsection{RoBERTa Model with Header Knowledge Vector with WordNet}
+
+We implementented RoBERTa model without using table data. We marked two knowledge vectors using only headers and natual langauge question. However, the main difference here is how we did the  encoding of Header knwoledge vector. We encoded vector here with the help of WordNet as explained in Section 6. Results are shown in table \ref{robertatableoneheader} and table \ref{robertatabledetailedoneheader}.
+
+
+
+ \begin{table}
+\centering
+ \begin{tabular}{| m{2cm} | m{2cm}| m{2cm} |m{2cm}| m{2cm} |} 
+ \hline
+Model & Dev logical form acc. & Dev exec acc. & Test logical form acc. & Test exec acc. \\ 
+ \hline\hline
+  RoBERTa & 81.0\% & 86.0\% & 80.4\% & 85.4\% \\ 
+ \hline
+\end{tabular}
+\caption{Overall result of RoBERTa Model on WikiSQL task}
+\label{robertatableoneheader}
+\end{table}
+
+
+\begin{table}
+\centering
+ \begin{tabular}{| m{2cm} | m{2cm}| m{2cm} |m{2cm}| m{2cm} |m{2cm} | m{2cm} |m{2cm} |} 
+ \hline
+  Dataset & SELECT column & SELECT agg & WHERE number & WHERE column & WHERE op & WHERE value\\ 
+ \hline\hline
+  Dev & 97.0\% & 90.8\% & 98.8\% & 93.8\% & 97.7\% &  95.6\% \\ 
+\hline
+ Test & 96.8\% & 90.6\% & 98.3\% & 93.3\% & 97.2\% &  95.2\% \\ 
+ \hline
+
+\end{tabular}
+\caption{Break down result of RoBERTa model on WikiSQL task}
+\label{robertatabledetailedoneheader}
+\end{table}
+
+
+
+
+
+
 
 \begin{figure}[H]
     \includegraphics[width=250pt]{result1}
