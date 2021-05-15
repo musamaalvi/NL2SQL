@@ -389,7 +389,7 @@ Model & Dev logical form acc. & Dev exec acc. & Test logical form acc. & Test ex
   RoBERTa & 81.4\% & 86.6\% & 80.5\% & 85.8\% \\ 
  \hline
 \end{tabular}
-\caption{Overall result of RoBERTa Model on WikiSQL task with WordNet knowledge vectors}
+\caption{Overall result of RoBERTa Model on WikiSQL task with WordNet Header \& Question vectors}
 \label{robertatabletwoheader}
 \end{table}
 
@@ -413,10 +413,24 @@ Model & Dev logical form acc. & Dev exec acc. & Test logical form acc. & Test ex
 
 
 \section{Conclusion}
-In this experiment, the focus was on building the model without using the data available in database due to obvious privacy issues. This is a data agnostic model. We have seen that existing models use table content as well as a feature when inputting the model. Moreover, if some models are not using the real data, they make use of execution guided decoding. We have not used any of these two techniques. We have developed a data blind model using only table schema. 
+In this experiment, the focus was on building the model without using the data available in database due to obvious privacy issues. This is a data agnostic model. We have seen that existing models use table content as well as a feature when inputting the model. Moreover, if some models are not using the real data, they make use of execution guided decoding. We have not used any of these two techniques. We have developed a data blind model using only table schema and two important knowledge vectos with the help of WordNet. 
 \\
 \\
-Our result table shows that model has achieved 77.0\% accuracy on train set, and 76.7\% on test set. This is using WikiSQL dataset. This is a highly generalized model since any part of real data was not used. 
+Our results show promising improvements when even one vector is implemented with WordNet. Moreover, slightly more improveement is seen when both knowledge vectors where marked with the help of WordNet. Comparision between one vector, both vectors and no vectors for dev dataset is shown in figure \ref{devset} and for test dataset is shown in figure \ref{testset}
+
+
+\begin{figure}[H]
+    \includegraphics[width=400pt]{devset}
+    \caption{Comparison Betwen WithoutWordNet, Header WordNet, Header Vector \&  Question WordNet Vectors for Dev}
+    \label{devset}
+\end{figure}
+
+
+\begin{figure}[H]
+    \includegraphics[width=400pt]{testset}
+    \caption{Comparison Betwen WithoutWordNet, Header WordNet, Header Vector \&  Question WordNet Vectors for Test}
+    \label{testset}
+\end{figure}
 
 \bibliography{references}
 \bibliographystyle{ieeetr}
