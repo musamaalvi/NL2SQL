@@ -50,7 +50,9 @@
 
 
 \section{Abstract}
-Relational databases are being used world wide to store massive amount of data in numerous fields. However, user faces issues while accessing data from these databases. Users need to understand structured query languages (SQL) in order to query on these databases and fetch results. An average user do not have this knowledge of these query languages. Here NL2SQL tasks play their role for providing an interface to fetch results. These tasks revolves around converting questions written in natural languages to structured query languages using deep learning approaches. This problem has received more attention recently because of large scale dataset releases such as WikiSQL. We have used RoBERTa model to achieve our task. We use RoBERTa model embeddings along with two knwoledge vectors, namely, header knowledge and question knowledge vectors and pass it to LSTM based models to give us final results. We have improved both knowledge vectors which are passed to LSTM based models. The proposed method in the study has been evaluated on WikiSQL dataet. 
+Relational databases are being used world wide to store massive amount of data in numerous fields. However, user faces issues while accessing data from these databases. Users need to understand structured query languages (SQL) in order to query on these databases and fetch results. An average user do not have this knowledge of these query languages. Here NL2SQL tasks play their role for providing an interface to fetch results. These tasks revolves around converting questions written in natural languages to structured query languages using deep learning approaches. This problem has received more attention recently because of large scale dataset releases such as WikiSQL. We have used RoBERTa model to achieve our task. We use RoBERTa model embeddings along with two knowledge vectors, namely, header knowledge and question knowledge vectors and pass it to LSTM based models to give us final results. We have improved both knowledge vectors which are passed to LSTM based models. The proposed method in the study has been evaluated on WikiSQL dataet. 
+\\
+We use 6 LSTM based models for predicting individual parts of SQL. Significant improvements have been seen in each of the sub models which adds up to total accruacy. Model responsible for predicting select column has improved 1.0\%, select agg 0.2\%, where number 0.8\%, where column 2.7\%, where op 4.5\%, where value 5.4\%.
 \\
 \\
 
@@ -79,7 +81,7 @@ Pre trained language models such as BERT \cite{devlin2018bert} and RoBERTa \cite
 \\Although there are number of models having significant accuracies on WikiSQL dataset, accuracies are still limited on Spider benchmark\cite{yu2018spider}. One of the reasons is that Spider dataset is more complex compared to WikiSQL dataset. WikiSQL focuses on rather simpler queries having single or multiple where clauses and no joins.\\\\\\
 
 \subsection{Motivation}
-Strcutured query lagnauges has always been a bottleneck for researchers who are not familiar with the ways of structured query langauges. This unfamiliarity creates an additional dependency for researchers in order to interact with databases for the dependency of data. If we are able to make a program, model, some kind of interface which lets researchers or any native users interact with databases without any prior knowledge of database, it will save a lot of time and resources. This has been a primarily source of motivaion to decouple this dependency in order to save time and energy as well. 
+Structured query languages has always been a bottleneck for researchers who are not familiar with the ways of structured query languages. This unfamiliarity creates an additional dependency for researchers in order to interact with databases for the dependency of data. If we are able to make a program, model, some kind of interface which lets researchers or any native users interact with databases without any prior knowledge of database, it will save a lot of time and resources. This has been a primarily source of motivation to decouple this dependency in order to save time and energy as well. 
 
 
 
@@ -88,7 +90,7 @@ Strcutured query lagnauges has always been a bottleneck for researchers who are 
 
 \section{Related Work}
 
-In this section, we will review the past contributions that has brought natural language to structured query langauge task closer to real world solutions. 
+In this section, we will review the past contributions that has brought natural language to structured query language task closer to real world solutions. 
 
 \subsection{Problems with Previous Approaches}
 
@@ -169,10 +171,10 @@ For header mark vector, we follow same procedure. Frist, vector is initialized o
 
 
 \subsection{BERT}
-In BERT based model, we generate two knowledge vectors as well to give our model more confidence. These two are binary vectors same as in the case of RoBERTa and tell model which part are more important and need to be focused on by marking that specific parts. They encode the significance of headers and question tokens. Both of these vectors are then concatenated together and passed as additional features to model in order to bring more confidence in models. The main difference comes in the encoding. Here we encode based on the actual data which compromises the privacy of the data. Here we need the actual data for the encoding and for the elarning phase of the model. 
+In BERT based model, we generate two knowledge vectors as well to give our model more confidence. These two are binary vectors same as in the case of RoBERTa and tell model which part are more important and need to be focused on by marking that specific parts. They encode the significance of headers and question tokens. Both of these vectors are then concatenated together and passed as additional features to model in order to bring more confidence in models. The main difference comes in the encoding. Here we encode based on the actual data which compromises the privacy of the data. Here we need the actual data for the encoding and for the learning phase of the model. 
 
 \subsubsection{Question Mark Vector}
-For the encoding of Question amrk vector, we crete a vector of question's length initialized with zeros only. After initialization, we iterate through each cell in table data and if there is a match between cell data and question, then respective position of question vector is marked. One important thing to note here is that we are iterating through table data as hown in figure \ref{cellfeature1}. This compromises the privacy of data. Although this increases the accuracy of the model due to training ona ctual data, it exposes actual data to model. 
+For the encoding of Question mark vector, we create a vector of question's length initialized with zeros only. After initialization, we iterate through each cell in table data and if there is a match between cell data and question, then respective position of question vector is marked. One important thing to note here is that we are iterating through table data as shown in figure \ref{cellfeature1}. This compromises the privacy of data. Although this increases the accuracy of the model due to training ona ctual data, it exposes actual data to model. 
 
 \begin{figure}[H]
     \includegraphics[width=400pt]{cellfeature}
@@ -181,7 +183,7 @@ For the encoding of Question amrk vector, we crete a vector of question's length
 \end{figure}
 
 \subsubsection{Header Mark Vector}
-For this vector, we initialize vector with zeros of ehader length. We iterate though cell data as well for marking positions of great importance which can convey useful information to the model. Once again, this vector as well compromises the privacy of actual data while training. 
+For this vector, we initialize vector with zeros of header length. We iterate though cell data as well for marking positions of great importance which can convey useful information to the model. Once again, this vector as well compromises the privacy of actual data while training. 
 
 \begin{figure}[H]
     \includegraphics[width=400pt]{headermarkvetorbert}
@@ -249,10 +251,10 @@ The WordNet database contains many sorts of relationships between words which he
 \end{figure}
 
 \subsection{Implementation}
-We have taken help of WordNet in creating of our two knowledge vectors, header knowledge vector, question knowledge vector. While marking these vectors in order to provide useful information to model with the areas where to focus on, we used to look for exact matches in the headers and questions. Through this method, our vectors were loosing much information which cold help model gain some accuracy and show better results. In our implementation, we did not look for exact amtches, rather, we created two synsets and calculated the probability of their match. We marked vectors if the probability was greater than or equal to 0.7. 
+We have taken help of WordNet in creating of our two knowledge vectors, header knowledge vector, question knowledge vector. While marking these vectors in order to provide useful information to model with the areas where to focus on, we used to look for exact matches in the headers and questions. Through this method, our vectors were loosing much information which cold help model gain some accuracy and show better results. In our implementation, we did not look for exact matches, rather, we created two synsets and calculated the probability of their match. We marked vectors if the probability was greater than or equal to 0.7. 
 
 \subsubsection{why?}
-It is quite common in natural language that we sometimes use synchronyms in our sentences and not exact words which were affecting results in our problem domain. Not only synchronyms, but the use of singualr words and plural words were also affecting our model, since, singular and plural does not result in exact match as well. 
+It is quite common in natural language that we sometimes use synonyms in our sentences and not exact words which were affecting results in our problem domain. Not only synonyms, but the use of singular words and plural words were also affecting our model, since, singular and plural does not result in exact match as well. 
 
 \section{Analysis and Results}
 
@@ -307,7 +309,7 @@ Model & Dev logical form acc. & Dev exec acc. & Test logical form acc. & Test ex
 
 \subsection{RoBERTa with Traditional Knowledge Vectors}
 
-We implementented RoBERTa model without using table data. It did ensure the privacy of data, however, it did come with its trade off. We marked two knowledge vectors using only headers and natual langauge question. In this model, we did not use any real data for training of the model, rather, we used only schema information of the table. Results are shown in table \ref{robertatable} and table \ref{robertatabledetailed}.
+We implementent RoBERTa model without using table data. It did ensure the privacy of data, however, it did come with its trade off. We marked two knowledge vectors using only headers and natural language question. In this model, we did not use any real data for training of the model, rather, we used only schema information of the table. Results are shown in table \ref{robertatable} and table \ref{robertatabledetailed}.
 
  \begin{table}
 \centering
@@ -341,7 +343,7 @@ Model & Dev logical form acc. & Dev exec acc. & Test logical form acc. & Test ex
 
 \subsection{RoBERTa Model with Header Knowledge Vector with WordNet}
 
-We implementented RoBERTa model without using table data. We marked two knowledge vectors using only headers and natual langauge question. However, the main difference here is how we did the  encoding of Header knwoledge vector. We encoded vector here with the help of WordNet as explained in Section 6. Results are shown in table \ref{robertatableoneheader} and table \ref{robertatabledetailedoneheader}.
+We implementented RoBERTa model without using table data. We marked two knowledge vectors using only headers and natural language question. However, the main difference here is how we did the  encoding of Header knowledge vector. We encoded vector here with the help of WordNet as explained in Section 6. Results are shown in table \ref{robertatableoneheader} and table \ref{robertatabledetailedoneheader}.
 
 
 
@@ -378,7 +380,7 @@ Model & Dev logical form acc. & Dev exec acc. & Test logical form acc. & Test ex
 
 \subsection{RoBERTa Model with Question \& Header Knowledge Vectors with WordNet}
 
-We implementented RoBERTa model without using table data. We marked two knowledge vectors using only headers and natual langauge question. However, the main difference here is how we did the  encoding of Header knwoledge vector as well as Question knowledge vector. We encoded vectors here with the help of WordNet as explained in Section 6. Results are shown in table \ref{robertatabletwoheader} and table \ref{robertatabledetailedtwoheader}.
+We implementented RoBERTa model without using table data. We marked two knowledge vectors using only headers and natural language question. However, the main difference here is how we did the  encoding of Header knowledge vector as well as Question knowledge vector. We encoded vectors here with the help of WordNet as explained in Section 6. Results are shown in table \ref{robertatabletwoheader} and table \ref{robertatabledetailedtwoheader}.
 
  \begin{table}
 \centering
@@ -416,19 +418,19 @@ Model & Dev logical form acc. & Dev exec acc. & Test logical form acc. & Test ex
 In this experiment, the focus was on building the model without using the data available in database due to obvious privacy issues. This is a data agnostic model. We have seen that existing models use table content as well as a feature when inputting the model. Moreover, if some models are not using the real data, they make use of execution guided decoding. We have not used any of these two techniques. We have developed a data blind model using only table schema and two important knowledge vectos with the help of WordNet. 
 \\
 \\
-Our results show promising improvements when even one vector is implemented with WordNet. Moreover, slightly more improveement is seen when both knowledge vectors where marked with the help of WordNet. Comparision between one vector, both vectors and no vectors for dev dataset is shown in figure \ref{devset} and for test dataset is shown in figure \ref{testset}
+Our results show promising improvements when even one vector is implemented with WordNet. Moreover, slightly more improvement is seen when both knowledge vectors where marked with the help of WordNet. Comparison between one vector, both vectors and no vectors for dev dataset is shown in figure \ref{devset} and for test dataset is shown in figure \ref{testset}
 
 
 \begin{figure}[H]
     \includegraphics[width=400pt]{devset}
-    \caption{Comparison Betwen WithoutWordNet, Header WordNet, Header Vector \&  Question WordNet Vectors for Dev}
+    \caption{Comparison Betwen WithoutWordNet, Header WordNet \&  Question WordNet Vectors for Dev}
     \label{devset}
 \end{figure}
 
 
 \begin{figure}[H]
     \includegraphics[width=400pt]{testset}
-    \caption{Comparison Betwen WithoutWordNet, Header WordNet, Header Vector \&  Question WordNet Vectors for Test}
+    \caption{Comparison Betwen WithoutWordNet, Header WordNet \&  Question WordNet Vectors for Test}
     \label{testset}
 \end{figure}
 
