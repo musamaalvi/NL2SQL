@@ -15,10 +15,17 @@ nltk.download('wordnet')
 
 
 def question_knowledge_updated(header_knowledge, header, nlq_tokenized ):
+    global question_knowledge_counter
+    global total_question_knowledge_counter
     #for i, each_header_list in enumerate(header):
     for k, tok in enumerate(nlq_tokenized):
         for kk, head in enumerate(header):
+            if check_similarity_words(head, tok) == 1.0:
+                question_knowledge_counter = question_knowledge_counter + 1
+            if check_similarity_words(head, tok) > 0.8 and check_similarity_words(head, tok) < 1.0:
+                total_question_knowledge_counter = total_question_knowledge_counter + 1
             if check_similarity_words(head, tok) > 0.8:
+                
                 #if head.lower() != tok.lower():
                 header_knowledge[k]=4
 
@@ -27,10 +34,17 @@ def question_knowledge_updated(header_knowledge, header, nlq_tokenized ):
 
 
 def header_knowledge_updated(header_knowledge, header, nlq_tokenized ):
+    global question_header_counter
+    global total_header_knowledge_counter
     #for i, each_header_list in enumerate(header):
     for k, head in enumerate(header):
         for kk, tok in enumerate(nlq_tokenized):
+            if check_similarity_words(head, tok) == 1.0:
+                question_header_counter = question_header_counter + 1
+            if check_similarity_words(head, tok) > 0.8 and check_similarity_words(head, tok) < 1.0:
+                total_header_knowledge_counter = total_header_knowledge_counter + 1
             if check_similarity_words(head, tok) > 0.8:
+                
                 #if head.lower() != tok.lower():
                 header_knowledge[k]=1
 

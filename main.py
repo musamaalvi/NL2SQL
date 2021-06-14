@@ -55,6 +55,10 @@ def run():
                     
     for epoch in range(0, EPOCHS):
         acc_train = dev_function.train( seq2sql_model, roberta_model, model_optimizer, roberta_optimizer, tokenizer, configuration, path_wikisql, train_loader)
+        print("question_knowledge_counter " + str(question_knowledge_counter))
+        print("total_question_knowledge_counter " + str(total_question_knowledge_counter))
+        print("question_header_counter " + str(question_header_counter))
+        print("total_header_knowledge_counter " + str(total_header_knowledge_counter))
         acc_dev, results_dev, cnt_list = dev_function.test(seq2sql_model, roberta_model, model_optimizer, tokenizer, configuration, path_wikisql, dev_loader, mode="dev")
         print_result(epoch, acc_train, 'train')
         print_result(epoch, acc_dev, 'dev')
@@ -81,5 +85,9 @@ def run():
         print(f" Best Dev lx acc: {acc_lx_t_best} at epoch: {epoch_best}")
 if __name__ == "__main__":
     print("usama")
+    question_knowledge_counter = 0
+    total_question_knowledge_counter = 0
+    question_header_counter = 0
+    total_header_knowledge_counter = 0
     run()
     
