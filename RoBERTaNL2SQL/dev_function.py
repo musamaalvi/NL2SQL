@@ -7,7 +7,7 @@ import load_data
 import roberta_training
 import infer_functions
 import torch
-from tqdm.notebook import tqdm
+from tqdm import tqdm
 import seq2sql_model_testing
 from nltk.corpus import wordnet as wn
 import nltk

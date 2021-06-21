@@ -50,9 +50,7 @@
 
 
 \section{Abstract}
-Relational databases are being used world wide to store massive amount of data in numerous fields. However, user faces issues while accessing data from these databases. Users need to understand structured query languages (SQL) in order to query on these databases and fetch results. An average user do not have this knowledge of these query languages. Here NL2SQL tasks play their role for providing an interface to fetch results. These tasks revolves around converting questions written in natural languages to structured query languages using deep learning approaches. This problem has received more attention recently because of large scale dataset releases such as WikiSQL. We have used RoBERTa model to achieve our task. We use RoBERTa model embeddings along with two knowledge vectors, namely, header knowledge and question knowledge vectors and pass it to LSTM based models to give us final results. We have improved both knowledge vectors which are passed to LSTM based models. The proposed method in the study has been evaluated on WikiSQL dataet. 
-\\
-We use 6 LSTM based models for predicting individual parts of SQL. Significant improvements have been seen in each of the sub models which adds up to total accruacy. Model responsible for predicting select column has improved 1.0\%, select agg 0.2\%, where number 0.8\%, where column 2.7\%, where op 4.5\%, where value 5.4\%, which makes our test execution accuracy increased by 5.5\%.
+Relational databases are being used world wide to store massive amount of data in numerous fields. However, user faces issues while accessing data from these databases. Users need to understand structured query languages (SQL) in order to query on these databases and fetch results. An average user do not have this knowledge of these query languages. Here NL2SQL tasks play their role for providing an interface to fetch results. These tasks revolves around converting questions written in natural languages to structured query languages using deep learning approaches. This problem has received more attention recently because of large scale dataset releases such as WikiSQL. We have used RoBERTa model to achieve our task. We use RoBERTa model embeddings along with two knowledge vectors, namely, header knowledge and question knowledge vectors and pass it to LSTM based models to give us final results. We have improved both knowledge vectors which are passed to LSTM based models. The proposed method in the study has been evaluated on WikiSQL dataet. We use 6 LSTM based models for predicting individual parts of SQL. Significant improvements have been seen in each of the sub models which adds up to total accruacy. Model responsible for predicting select column has improved 1.0\%, select agg 0.2\%, where number 0.8\%, where column 2.7\%, where op 4.5\%, where value 5.4\%, which makes our test execution accuracy increased by 5.5\%.
 \\
 \\
 
@@ -131,18 +129,19 @@ IRNet is one of the known effective model for this problem \cite{guo2019towards}
 \subsection{X-SQL}
 Another approach that is used is called X-SQL. It is a new network architecture. X-SQL proposes to reinforce the contextual output from BERT-style pre training model into the structural schema representation, and learn a new schema representation for downstream tasks. This is tested on WikiSQL data set and it shows better results than the state of the art models. Results were improved on development as well as test sets \cite{bogin2019global}.
 
+ 
 
-
- \begin{longtable}{| m{2cm} | m{4cm}| m{5cm} |m{4cm}|} 
+ \begin{longtable}{| m{1.7cm} | m{4.5cm}| m{5.25cm} |m{4cm}|} 
  \hline
 Published Date & Name & Review & Dataset Used \\ 
  \hline\hline
+\endhead
   29 May, 2019 & Towards Complex
 Text-to-SQL in
 Cross-Domain
 Database with
 Intermediate
-Representation & In this paper, a neural
+Representation  (Jiaqi Guo et al., 2019) & In this paper, a neural
 approach SemQL is used for
 complex and cross-domain
 text to structured query
@@ -154,7 +153,7 @@ Text-To-SQL bench mark  \\
   22 Apr, 2020 & Content Enhanced
 BERT-based
 Text-to-SQL
-Generation & In this paper, the additional
+Generation (Tong Guo et al., 2020) & In this paper, the additional
 input was given to Bert based
 models which is table content.
 Table contents provided to
@@ -166,20 +165,20 @@ SQL queries.  \\
   6 Sep, 2019 &Table2answer: Read
 the database
 and answer without
-SQL &In this paper, the reasoning
+SQL (Tong Guo et al., 2019) &In this paper, the reasoning
 part was injected in the deep
 model. Therefore, the model
 here takes input the question
 and the data, and returns the
 actual data which was queries
-instead of the SQL. &WikiSQL data is used here which
+instead of the SQL &WikiSQL data is used here which
 is a very large human annotated
 dataset for natural language to
 SQL queries.  \\ 
-  4 Nov, 2018 & What It Takes to
+  4 Nov, 2018 &What It Takes to
 Achieve 100\%
 Condition Accuracy
-on WikiSQL & In this paper, a deeper analysis
+on WikiSQL (Semih Yavuz et al., 2018)  & In this paper, a deeper analysis
 was performed on the
 WikiSQL dataset in order to
 find why we are not able to
@@ -193,7 +192,7 @@ SQL queries.  \\
   6 Sep, 2018 &X-SQL: REINFORCE
 CONTEXT INTO
 SCHEMA
-REPRESENTATION & Another approach that is
+REPRESENTATION  (Pengcheng He et al., 2018)  & Another approach that is
 presented is called X-SQL. It is
 a new network architecture. XSQL proposes to reinforce the contextual output from BERTstyle pre-training model into
 the structural schema
@@ -214,7 +213,7 @@ Exploration on
 WikiSQL
 with Table-Aware
 Word
-Contextualization &In this paper, author
+Contextualization (Wonseok Hwang et al., 2019)  &In this paper, author
 demonstrate the effectiveness
 of table-aware word
 contextualization
@@ -237,7 +236,7 @@ NATURAL
 LANGUAGE
 WITHOUT
 REINFORCEMENT
-LEARNING & In this paper, focus has been
+LEARNING (Xiaojun Xu et al., 2017)& In this paper, focus has been
 on solving the “order-matters”
 problem. In order to convert
 natural language query to
@@ -391,8 +390,11 @@ The WordNet database contains many sorts of relationships between words which he
 \subsection{Implementation}
 We have taken help of WordNet in creating of our two knowledge vectors, header knowledge vector, question knowledge vector. While marking these vectors in order to provide useful information to model with the areas where to focus on, we used to look for exact matches in the headers and questions. Through this method, our vectors were loosing much information which could help model gain some accuracy and show better results. In our implementation, we did not look for exact matches, rather, we created two synsets and calculated the probability of their match which helped us better understand the relations of words rather than comparing it straightforward. We marked vectors if the probability was greater than or equal to 0.7. 
 
-\subsubsection{why?}
+\subsection{why?}
 It is quite common in natural language that we sometimes use synonyms in our sentences and not exact words which were affecting results in our problem domain. Not only synonyms, but the use of singular words and plural words were also affecting our model, since, singular and plural does not result in exact match as well. 
+
+\subsection{Analysis}
+When we started enriching the header and knowledge vectors with the help of similar sense words, we started tracking how many words were benefiting from it. We started tracking count of words which were completely same and count of those words as well which were close to each other. This gives us the clear picture in terms of percentage that how many words are being benefitted from our implementation. 
 
 \section{Analysis and Results}
 
