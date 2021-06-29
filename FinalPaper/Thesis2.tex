@@ -11,7 +11,7 @@
 
 
 
-\date{January 15, 2021}
+\date{June 29, 2021}
 \maketitle
 
 
@@ -131,12 +131,12 @@ Another approach that is used is called X-SQL. It is a new network architecture.
 
  
 
- \begin{longtable}{| m{1.7cm} | m{4.5cm}| m{5.25cm} |m{4cm}|} 
+ \begin{longtable}{ | m{4.5cm}| m{6cm} |m{5cm}|} 
  \hline
-Published Date & Name & Review & Dataset Used \\ 
+  Name & Review & Dataset Used \\ 
  \hline\hline
 \endhead
-  29 May, 2019 & Towards Complex
+ Towards Complex
 Text-to-SQL in
 Cross-Domain
 Database with
@@ -149,8 +149,7 @@ language (SQL) &Dataset Spider is used here. It
 contains large-scale human
 annotated and cross domain
 Text-To-SQL bench mark  \\ 
-  
-  22 Apr, 2020 & Content Enhanced
+  Content Enhanced
 BERT-based
 Text-to-SQL
 Generation (Tong Guo et al., 2020) & In this paper, the additional
@@ -162,7 +161,7 @@ increasing accuracy. & WikiSQL data is used here which
 is a very large human annotated
 dataset for natural language to
 SQL queries.  \\ 
-  6 Sep, 2019 &Table2answer: Read
+  Table2answer: Read
 the database
 and answer without
 SQL (Tong Guo et al., 2019) &In this paper, the reasoning
@@ -175,7 +174,7 @@ instead of the SQL &WikiSQL data is used here which
 is a very large human annotated
 dataset for natural language to
 SQL queries.  \\ 
-  4 Nov, 2018 &What It Takes to
+  What It Takes to
 Achieve 100\%
 Condition Accuracy
 on WikiSQL (Semih Yavuz et al., 2018)  & In this paper, a deeper analysis
@@ -189,7 +188,7 @@ WikiSQL dataset. &WikiSQL data is used here, which
 is a very large human annotated
 dataset for natural language to
 SQL queries.  \\ 
-  6 Sep, 2018 &X-SQL: REINFORCE
+  X-SQL: REINFORCE
 CONTEXT INTO
 SCHEMA
 REPRESENTATION  (Pengcheng He et al., 2018)  & Another approach that is
@@ -208,7 +207,7 @@ well as test sets. & WikiSQL data is used here which
 is a very large human annotated
 dataset for natural language to
 SQL queries.  \\ 
-  20 May, 2019 &A Comprehensive
+   A Comprehensive
 Exploration on
 WikiSQL
 with Table-Aware
@@ -228,7 +227,7 @@ DECODERLAYER, and NL2SQLLAYER. &WikiSQL data is used here which
 is a very large human annotated
 dataset for natural language to
 SQL queries.  \\ 
-13 Nov, 2017 &SQLNet:
+ SQLNet:
 GENERATING
 STRUCTURED
 QUERIES FROM
@@ -284,7 +283,7 @@ WikiSQL is a large semantic parsing dataset. It contains around 24,241 tables an
 We have implemented two based models based on BERT and RoBERTa, in order to build up our implementation on top of it. In the following section, we will be going through each implementation and their differences along with advantages and disadvantages. 
 
 \subsection{RoBERTa}
-In RoBERTa based model, we generate two knowledge vectors to give our model more confidence. These two are binary vectors and tell model which part are more important and need to be focused on by marking that specific parts. They encode the significance of headers and question tokens. Both of these vectors are then concatenated together and passed as additional features to model in order to bring more confidence in models. 
+In RoBERTa based model, we generate two knowledge vectors to give our model more confidence \cite{pal2021data}. These two are binary vectors and tell model which part are more important and need to be focused on by marking that specific parts. They encode the significance of headers and question tokens. Both of these vectors are then concatenated together and passed as additional features to model in order to bring more confidence in models. 
 
 
 \subsubsection{Question Mark Vector}
@@ -394,7 +393,13 @@ We have taken help of WordNet in creating of our two knowledge vectors, header k
 It is quite common in natural language that we sometimes use synonyms in our sentences and not exact words which were affecting results in our problem domain. Not only synonyms, but the use of singular words and plural words were also affecting our model, since, singular and plural does not result in exact match as well. 
 
 \subsection{Analysis}
-When we started enriching the header and knowledge vectors with the help of similar sense words, we started tracking how many words were benefiting from it. We started tracking count of words which were completely same and count of those words as well which were close to each other. This gives us the clear picture in terms of percentage that how many words are being benefitted from our implementation. 
+When we started enriching the header and knowledge vectors with the help of similar sense words, we started tracking how many words were benefiting from it. We started tracking count of words which were completely same and count of those words as well which were close to each other. This gives us the clear picture in terms of percentage that how many words are being benefitted from our implementation. Comparison can be seen in figure \ref{WordMatches}
+
+\begin{figure}[H]
+    \includegraphics[width=450pt]{wordmatches}
+	\caption{Word Matches}
+    \label{WordMatches}
+\end{figure}
 
 \section{Analysis and Results}
 
@@ -553,7 +558,7 @@ Model & Dev logical form acc. & Dev exec acc. & Test logical form acc. & Test ex
 \end{table}
 
 \subsection{Comparison of Final Results}
-Final comparison of test results are showin in table \ref{finalcomparisonmodel} and table \ref{finalcomparison}.
+Final comparison of test results are shown in table \ref{finalcomparisonmodel} and table \ref{finalcomparison}.
 
 
  \begin{table}
@@ -601,14 +606,14 @@ Our work opens a new direction to explore which can yield many promising results
 
 \begin{figure}[H]
     \includegraphics[width=400pt]{devset}
-    \caption{Comparison Betwen WithoutWordNet, Header WordNet \&  Question WordNet Vectors for Dev}
+    \caption{Comparison betwen Without WordNet, Header WordNet \&  Question WordNet Vectors for Dev}
     \label{devset}
 \end{figure}
 
 
 \begin{figure}[H]
     \includegraphics[width=400pt]{testset}
-    \caption{Comparison Betwen WithoutWordNet, Header WordNet \&  Question WordNet Vectors for Test}
+    \caption{Comparison betwen Without WordNet, Header WordNet \&  Question WordNet Vectors for Test}
     \label{testset}
 \end{figure}
 
