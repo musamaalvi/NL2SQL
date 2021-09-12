@@ -11,7 +11,7 @@
 
 \section{Introduction}
  
-This has been a long standing open problem to provide an interface on which a user, who has no idea about the syntax and working of a structured query language also known as SQL, can write queries in natural language and system converts that natural language to SQL. This SQL executes on database in order to fetch results. Many research has been done on this and still going on in order to bring up the accuracy. Although currently developed models are giving us a accuracy greater than 80\%, there are some dependencies in the model which makes them not suitable to use in practical applications. We will be discussing them as well in related work.
+This has been a long standing open problem to provide an interface on which a user, who has no idea about the syntax and working of a structured query language also known as SQL, can write queries in natural language and system converts that natural language to SQL. This SQL executes on database in order to fetch results. Many research has been done on this and still going on in order to bring up the accuracy. Although currently developed models are giving us a accuracy greater than 80\%, there are some dependencies in the model which makes them not suitable to use in practical applications. We will be discussing them as well.
 \\ \\
  Relational databases store a vast amount of data and are accessed through structured query languages. Many non technical persons are not familiar with these structured query languages, which creates a lot of trouble and dependencies. If we can remove this structured query language (SQL) dependency, then it would be a lot easier to fetch data from databases. This problem has been given a lot of attention after great number of  large scale datasets has been made available \cite{zhong2017seq2sql} \cite{setlur2019inferencing} \cite{yu2018spider}. 
 \\ \\
@@ -114,13 +114,13 @@ The WordNet database contains many sorts of relationships between words which he
 \end{figure}
 
 \subsubsection{Implementation}
-We have taken help of WordNet in creating of our two knowledge vectors, header knowledge vector, question knowledge vector. While marking these vectors in order to provide useful information to model with the areas where to focus on, we used to look for exact matches in the headers and questions. Through this method, our vectors were loosing much information which could help model gain some accuracy and show better results. In our implementation, we did not look for exact matches, rather, we created two synsets and calculated the probability of their match which helped us better understand the relations of words rather than comparing it straightforward. We marked vectors if the probability was greater than or equal to 0.7. 
+We have taken help of WordNet in creating of our two knowledge vectors, header knowledge vector and question knowledge vector. While marking these vectors in order to provide useful information to model with the areas where to focus on, we used to look for exact matches in the headers and questions. Through this method, our vectors were loosing much information which could help model gain some accuracy and show better results. In our implementation, we did not look for exact matches, rather, we created two synsets and calculated the probability of their match which helped us better understand the relations of words rather than comparing it straightforward. We marked vectors if the probability was greater than or equal to 0.7. 
 
 \subsubsection{why?}
 It is quite common in natural language that we sometimes use synonyms in our sentences and not exact words which were affecting results in our problem domain. Not only synonyms, but the use of singular words and plural words were also affecting our model, since, singular and plural does not result in exact match as well. 
 
 \subsubsection{Analysis}
-When we started enriching the header and knowledge vectors with the help of similar sense words, we started tracking how many words were benefiting from it. We started tracking count of words which were completely same and count of those words as well which were close to each other. This gives us the clear picture in terms of percentage that how many words are being benefitted from our implementation. Comparison can be seen in figure \ref{WordMatches}
+When we started enriching the header and knowledge vectors with the help of similar sense words, we started tracking how many words were benefiting from it. We started tracking count of words which were completely same and count of those words as well which were close to each other. This gives us the clear picture in terms of percentage that how many words are being benefitted from our implementation. Comparison can be seen in figure \ref{WordMatches}.
 
 \begin{figure}[H]
     \includegraphics[width=450pt]{wordmatches}
@@ -146,37 +146,7 @@ as well as the baseline SQLNet Model:
 Note: Accuracy has been shortened to acc. and execution
 has been shortened to exec.
 
-\subsection{BERT with Content Enhanced Implementation}
-
-BERT model implementation with table data included in training gives promising results. However, it compromises the privacy of the data. This implementation is carried out with traditional two knowledge vectors without the additional input of WordNet, results are shown in table \ref{berttable} and table \ref{berttabledetailed}.
-
-
- \begin{table}
-\centering
- \begin{tabular}{| m{2cm} | m{2cm}| m{2cm} |m{2cm}| m{2cm} |} 
- \hline
-Model & Dev logical form acc. & Dev exec acc. & Test logical form acc. & Test exec acc. \\ 
- \hline\hline
-  BERT & 84.3\% & 90.3\% & 83.7\% & 89.2\% \\ 
- \hline
-\end{tabular}
-\caption{Overall result of BERT Model on WikiSQL task}
-\label{berttable}
-\end{table}
-
-\begin{table}
-\centering
- \begin{tabular}{| m{2cm} | m{2cm}| m{2cm} |m{2cm}| m{2cm} |m{2cm} | m{2cm} |} 
- \hline
- Model  & SELECT column & SELECT agg & WHERE number & WHERE column & WHERE op & WHERE value\\ 
- \hline\hline
- BERT & 97.4\% & 90.0\% & 99.1\% & 97.9\% & 98.1\% &  97.6\% \\ 
- \hline
-
-\end{tabular}
-\caption{Break down result of BERT model on WikiSQL task}
-\label{berttabledetailed}
-\end{table}
+ 
 
 
 \subsection{RoBERTa with Traditional Knowledge Vectors}
@@ -320,7 +290,7 @@ Model & Dev logical form acc. & Dev exec acc. & Test logical form acc. & Test ex
 
 
 \section{Conclusion}
-In this experiment, the focus was on building the model without using the data available in database due to obvious privacy issues. This is a data agnostic model. We have seen that existing models use table content as well as a feature when inputting the model. Moreover, if some models are not using the real data, they make use of execution guided decoding. We have not used any of these two techniques. We have developed a data blind model using only table schema and two important knowledge vectors with the help of WordNet. 
+In this experiment, the focus was on improving the model without using the data available in database due to obvious privacy issues. This is a data agnostic model. We have seen that existing models use table content as well as a feature when inputting the model. Moreover, if some models are not using the real data, they make use of execution guided decoding. We have not used any of these two techniques. We have developed a data blind model using only table schema and two important knowledge vectors with the help of WordNet. 
 \\
 \\
 Our results show promising improvements when even one vector is implemented with WordNet. Moreover, slightly more improvement is seen when both knowledge vectors where marked with the help of WordNet. Comparison between one vector, both vectors and no vectors for dev dataset is shown in figure \ref{devset} and for test dataset is shown in figure \ref{testset}
